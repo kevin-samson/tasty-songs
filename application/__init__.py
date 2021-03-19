@@ -1,4 +1,11 @@
 from flask import Flask
+from flask_socketio import SocketIO
+from config import Config
+import spotipy
+
+sp_oauth = spotipy.oauth2.SpotifyOAuth(client_id=Config.CLIENT_ID, client_secret=Config.CLIENT_SECRET,
+                                       redirect_uri=Config.REDIRECT_URI,
+                                       scope=Config.SCOPE)
 
 
 def create_app():
@@ -12,5 +19,5 @@ def create_app():
 
         # REGISTER ROUTES
         app.register_blueprint(view, url_prefix="/")
-
-    return app
+        socketio = SocketIO(app)
+    return app, socketio
